@@ -31,16 +31,16 @@ describe('Persistent Node Chat Server', function() {
     // Post the user to the chat server.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:3000/classes/users',
+      uri: 'http://localhost:3000/classes/users',
       json: { username: 'Valjean' }
     }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
-        uri: 'http://127.0.0.1:3000/classes/messages',
+        uri: 'http://localhost:3000/classes/messages',
         json: {
           username: 'Valjean',
-          message: 'In mercy\'s name, three days is all I need.',
+          text: 'In mercy\'s name, three days is all I need.',
           roomname: 'Hello'
         }
       }, function () {
@@ -49,11 +49,12 @@ describe('Persistent Node Chat Server', function() {
 
         // TODO: You might have to change this test to get all the data from
         // your message table, since this is schema-dependent.
-        var queryString = 'SELECT * FROM messages';
+        var queryString = 'SELECT message FROM messages;';
         var queryArgs = [];
 
-        dbConnection.query(queryString, queryArgs, function(err, results) {
+        dbConnection.query(queryString, function(err, results) {
           // Should have one result:
+          console.log(JSON.stringify(results));
           expect(results.length).to.equal(1);
 
           // TODO: If you don't have a column named text, change this test.
@@ -67,7 +68,7 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = "select * from messages;";
+    var queryString = "select message from messages;";
     var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave

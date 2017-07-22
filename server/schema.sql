@@ -1,14 +1,13 @@
-drop database chat;
 CREATE DATABASE chat;
 USE chat;
 CREATE TABLE Users (
-  user_Id int,
+  user_Id int NOT NULL AUTO_INCREMENT,
   userName text,
   PRIMARY KEY (user_Id)  
 );
 
 CREATE TABLE Messages (
-  message_Id int,
+  message_Id int NOT NULL AUTO_INCREMENT,
   roomName text,
   message text,
   sender_Id int,

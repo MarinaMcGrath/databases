@@ -22,7 +22,7 @@
 
 app = {
 
-  server: 'http://1.11.0.0:3000/classes/messages/',
+  server: 'http://localhost:3000/classes/messages',
 
   init: function() {
     // Get username
@@ -53,17 +53,19 @@ app = {
   },
 
   renderMessage: function(message) {
-    var $user = $('<div>', {class: 'user'}).text(message.username);
-    var $text = $('<div>', {class: 'text'}).text(message.text);
-    var $message = $('<div>', {class: 'chat', 'data-id': message.objectId }).append($user, $text);
+    // var $user = $('<div>', {class: 'user'}).text(message.username);
+    var $text = $('<div>', {class: 'text'}).text(message.message);
+    // var $message = $('<div>', {class: 'chat'}).append($text);
+    var $message = $('<div>', {class: 'chat', 'data-id': message.message_Id}).append($text);
+    
     return $message;
   },
 
   displayMessage: function(message) {
-    if (!app.onscreenMessages[message.objectId]) {
+    if (!app.onscreenMessages[message.message_Id]) {
       var $html = app.renderMessage(message);
       $('#chats').prepend($html);
-      app.onscreenMessages[message.objectId] = true;
+      app.onscreenMessages[message.message_Id] = true;
     }
   },
 
@@ -76,10 +78,9 @@ app = {
   loadMsgs: function() {
     $.ajax({
       url: app.server,
-      data: { order: '-createdAt' },
       contentType: 'application/json',
       success: function(json) {
-        app.displayMessages(json.results);
+        app.displayMessages(JSON.parse(json));
       },
       complete: function() {
         app.stopSpinner();
