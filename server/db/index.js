@@ -17,5 +17,4 @@ exports.connect = exports.con.connect(function(err) {
     throw err;
   }
   console.log("Connected!");
-  
 });
